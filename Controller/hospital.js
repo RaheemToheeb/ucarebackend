@@ -136,54 +136,54 @@ const createHospital = async (req, res) => {
     //   hospitalId: hospital._id,
     // });
 
-    await verifyEmailHospital(email, hospital._id, OTP)
-      .then((data) => {
-        console.log(data);
-        res.status(201).json({
-          status: "Success",
-          message:
-            "An OTP has been sent to Your inbox. Check to verify your account.",
-        });
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    // await verifyEmailHospital(email, hospital._id, OTP)
+    //   .then((data) => {
+    //     console.log(data);
+    //     res.status(201).json({
+    //       status: "Success",
+    //       message:
+    //         "An OTP has been sent to Your inbox. Check to verify your account.",
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.message);
+    //   });
 
     //send verification mail
 
     localURL = "http://localhost:1201";
     mainURL = "http://localhost:3000";
 
-    // const mailOptions = {
-    //   from: "gideonekeke64@gmail.com",
-    //   to: email,
-    //   subject: "Account Verification",
-    //   html: `
-    //   <p>${hospitalName}, confirm your account</p>
-    //   <p >Complete your registration by clicking this <a href="${mainURL}/api/hospital/${hospital._id}/${token}/otp">link</a>.</p>
-    //   <p>Use this code as your OTP: <b>${OTP}</b></p>
-    //   <p>If you did not create this account,please ignore this message.</p>
-    //   `,
-    // };
+    const mailOptions = {
+      from: "gideonekeke64@gmail.com",
+      to: email,
+      subject: "Account Verification",
+      html: `
+      <p>${hospitalName}, confirm your account</p>
+      <p >Complete your registration by clicking this <a href="${mainURL}/api/hospital/${hospital._id}/${token}/otp">link</a>.</p>
+      <p>Use this code as your OTP: <b>${OTP}</b></p>
+      <p>If you did not create this account,please ignore this message.</p>
+      `,
+    };
 
-    // await transport.sendMail(mailOptions, (err, info) => {
-    // if (err) {
-    //   console.log(err.message);
-    // } else {
-    //   console.log("Email sent to inbox", info.response);
-    // }
-    // });
+    await transport.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log(err.message);
+      } else {
+        console.log("Email sent to inbox", info.response);
+      }
+    });
 
     // await verifyEmailHospital(email, hospital._id).then((res) => {
     //   console.log(res);
     // });
 
-    // res.status(201).json({
-    //   status: "Success",
-    //   message:
-    //     "An OTP has been sent to Your inbox. Please check and verify your account.",
-    //   data: hospital,
-    // });
+    res.status(201).json({
+      status: "Success",
+      message:
+        "An OTP has been sent to Your inbox. Please check and verify your account.",
+      data: hospital,
+    });
   } catch (error) {
     res.status(500).json({
       status: "Failed",

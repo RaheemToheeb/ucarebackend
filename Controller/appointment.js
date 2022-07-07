@@ -270,21 +270,21 @@ const mailAppointment = async (req, res) => {
 
       // console.log(appointment.patient.email);
       if (appointment) {
+        const patientEmail = appointment.patient.email;
         //send mail
         localURL = "http://localhost:1201";
         mainURL = "http://localhost:3000";
         const mailOptions = {
           from: "gideonekeke64@gmail.com",
-          to: appointment.patient.email,
+          to: patientEmail,
           subject: "Appointment Notification",
           html: `
-              <p><b>Patient Name:</b> ${appointment.patientName}</p>
+              <p>Here are the datails of your appointment:</p>
               <p><b>Case:</b> ${appointment.patientCase}</p>
               <p><b>Date:</b> ${appointment.dateAndTime}</p>
               <p><b>Doctor Name:</b> ${appointment.doctorName}</p>
               <p><b>Doctor Specialization:</b> ${appointment.doctorRole}</p>
               <p><b>Department:</b> ${appointment.department}</p>
-
               <h2>See you there.</h2>
               `,
         };

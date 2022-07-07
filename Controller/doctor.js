@@ -54,11 +54,11 @@ const createDoctor = async (req, res) => {
           // gender,
           // address,
           // city,
+          // verifiedToken: token,
           verifiedToken: "",
           isVerify: true,
           password: hashed,
           inputKey,
-
           // avatar: result.secure_url,
           // avatarId: result.public_id,
         });
@@ -74,7 +74,7 @@ const createDoctor = async (req, res) => {
         localURL = "http://localhost:1201";
         mainURL = "http://localhost:3000";
         const mailOptions = {
-          from: "nelsonelaye@hotmail.com",
+          from: "gideonekeke64@gmail.com",
           to: email,
           subject: "Account Verification",
           html: `
@@ -161,11 +161,11 @@ const signInDoctor = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const doctor = await doctorModel.findOne({ email: email });
+    const doctor = await doctorModel.findOne({ email });
     const hospital = await hospitalModel.findById(req.params.hospitalId);
     if (hospital) {
       if (doctor) {
-        if (doctor.inputKey == hospital.key) {
+        if (doctor.inputKey === hospital.key) {
           //Check for password
           const check = await bcrypt.compare(password, doctor.password);
           if (check) {
@@ -185,7 +185,7 @@ const signInDoctor = async (req, res) => {
 
               //send welcome mail
               const mailOptions = {
-                from: "nelsonelaye@hotmail.com",
+                from: "gideonekeke64@gmail.com",
                 to: email,
                 subject: "Welcome to U-Care",
                 html: `<h1>Hello, ${doctor.fullname},</h1><p>We are glad to have you here. we look forward to offering you the best services in this market.</p>`,
@@ -210,13 +210,13 @@ const signInDoctor = async (req, res) => {
 
               //send verification mail
 
-              const localURL = "http://localhost:1101";
-              const mainURL = "";
+              const localURL = "http://localhost:1201";
+              const mainURL = "http://localhost:3000";
               const mailOptions = {
                 from: "nelsonelaye@hotmail.com",
                 to: email,
                 subject: "Re-verification",
-                html: `<h3>${doctor.fullname}, confirm your account</h3><p>Complete your registration by click this <a href="${localURL}/api/doctor/${doctor._id}/${token}">link</a>.</p>
+                html: `<h3>${doctor.fullname}, confirm your account</h3><p>Complete your registration by click this <a href="${mainURL}/api/hospital/${hospital._id}/doctor/${doctor._id}/${token}">link</a>.</p>
           <p>Ignore this message if you did not make this request.</p>`,
               };
 
@@ -340,9 +340,6 @@ const updateDoctor = async (req, res) => {
           },
           { new: true }
         );
-
-        hospital.doctors.pull(mongoose.Types.ObjectId(doctor._id));
-        hospital.doctors.push(mongoose.Types.ObjectId(newDoctor._id));
 
         res.status(201).json({
           status: "Success",

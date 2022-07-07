@@ -144,7 +144,7 @@ const signInPatient = async (req, res) => {
     //find user in database/registerd
     if (patient) {
       if (hospital) {
-        // if (patient.hospital == hospital._id) {
+        // if (patient.hospital === hospital._id) {
         //Check for password
         const check = await bcrypt.compare(password, patient.password);
         if (check) {
@@ -341,9 +341,6 @@ const updatePatient = async (req, res) => {
           { new: true }
         );
 
-        hospital.patients.pull(mongoose.Types.ObjectId(patient._id));
-        hospital.patients.push(mongoose.Types.ObjectId(newPatient._id));
-
         res.status(201).json({
           status: "Success",
           data: newPatient,
@@ -451,7 +448,6 @@ const deletePatient = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   createPatient,
   getAllPatients,

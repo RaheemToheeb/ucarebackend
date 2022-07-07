@@ -2,10 +2,13 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transport = nodemailer.createTransport({
-  service: process.env.NEW_SERVICE,
+  service: process.env.SERVICE,
   auth: {
-    user: process.env.NEW_USER,
-    pass: process.env.NEW_PASS,
+    user: process.env.USER,
+    pass: process.env.PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
   },
 });
 
